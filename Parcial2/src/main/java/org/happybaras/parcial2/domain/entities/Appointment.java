@@ -21,16 +21,16 @@ public class Appointment {
     @Column(name = "timestamp")
     private Date timestamp;
 
-    @OneToMany(mappedBy = "userappointment", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<UserAppointment> userAppointment;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "prescription", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Prescription> prescription;
 

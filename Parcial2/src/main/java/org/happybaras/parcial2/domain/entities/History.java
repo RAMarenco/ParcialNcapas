@@ -16,7 +16,6 @@ public class History {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @Column(name = "user_id")
     @JsonIgnore
     private User user;
 
