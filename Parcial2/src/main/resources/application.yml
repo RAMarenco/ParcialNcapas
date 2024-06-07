@@ -4,7 +4,7 @@ spring:
   mustache:
     suffix: .html
   datasource:
-    url: jdbc:postgresql://localhost:5500/happybaras
+    url: jdbc:postgresql://localhost:5500/parcial
     username: postgres
     password: Abrilar-542
   jpa:
