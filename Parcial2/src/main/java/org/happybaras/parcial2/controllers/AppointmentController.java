@@ -43,10 +43,10 @@ public class AppointmentController {
             return GeneralResponse.builder().status(HttpStatus.NOT_FOUND).getResponse();
         }
 
-//        Appointment appointment = appointmentService.findByUserAndDateTime(user, dateTime);
-//
-//        if(appointment != null)
-//            return GeneralResponse.builder().message("Appointment already exists").status(HttpStatus.CONFLICT).getResponse();
+        Appointment appointment = appointmentService.findByUserAndDateTime(user, dateTime);
+
+        if(appointment != null)
+            return GeneralResponse.builder().message("Appointment already exists").status(HttpStatus.CONFLICT).getResponse();
 //
         appointmentService.createAppointmentRequest(user, dateTime);
 
