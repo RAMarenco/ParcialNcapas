@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface SpecialtyRepository extends JpaRepository<Specialty, UUID> {
+public interface SpecialtyRepository extends JpaRepository<Specialty, String> {
     Optional<Specialty> findByName(String name);
 }

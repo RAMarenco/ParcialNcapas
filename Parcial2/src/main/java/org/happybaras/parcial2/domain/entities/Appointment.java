@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,9 +19,7 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-//    @Column(name = "timestamp")
-//    private Date timestamp;
-
+    @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
     @Column(name = "date_time")
     private LocalDateTime dateTime;
 
@@ -38,6 +37,6 @@ public class Appointment {
     private List<Prescription> prescription;
 
     @Column(name = "status")
-    @ColumnDefault(value = "pending")
+    @ColumnDefault(value = "'pending'")
     private String status;
 }
