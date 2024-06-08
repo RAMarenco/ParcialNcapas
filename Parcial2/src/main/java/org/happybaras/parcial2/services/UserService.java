@@ -4,6 +4,8 @@ import org.happybaras.parcial2.domain.dtos.UserRegisterDTO;
 import org.happybaras.parcial2.domain.entities.Token;
 import org.happybaras.parcial2.domain.entities.User;
 
+import java.util.List;
+
 public interface UserService {
     // Token management
     Token registerToken(User user) throws Exception;
@@ -16,4 +18,5 @@ public interface UserService {
     User findByUsernameOrEmail(UserRegisterDTO info);
     boolean checkPassword(User user, String password);
     void createUser(UserRegisterDTO info);
+    void changeRoles(User user, List<String> roles);
 }

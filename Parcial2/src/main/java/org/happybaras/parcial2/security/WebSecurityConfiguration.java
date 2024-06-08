@@ -2,6 +2,7 @@ package org.happybaras.parcial2.security;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.happybaras.parcial2.domain.entities.User;
+import org.happybaras.parcial2.services.UserService;
 import org.happybaras.parcial2.utils.JWTTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,30 +25,30 @@ public class WebSecurityConfiguration {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    @Autowired
-//    private UserService userService;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private JWTTokenFilter filter;
 
-//    @Bean
-//    AuthenticationManager authenticationManagerBean(HttpSecurity http) throws Exception {
-//        AuthenticationManagerBuilder managerBuilder
-//                = http.getSharedObject(AuthenticationManagerBuilder.class);
-//
-//        managerBuilder
-//                .userDetailsService(identifier -> {
-//                    User user = userService.findOneByIdentifier(identifier);
-//
-//                    if(user == null)
-//                        throw new UsernameNotFoundException("User: " + identifier + ", not found!");
-//
-//                    return user;
-//                })
-//                .passwordEncoder(passwordEncoder);
-//
-//        return managerBuilder.build();
-//    }
+    @Bean
+    AuthenticationManager authenticationManagerBean(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder managerBuilder
+                = http.getSharedObject(AuthenticationManagerBuilder.class);
+
+        managerBuilder
+                .userDetailsService(identifier -> {
+                    User user = userService.findOneByIdentifier(identifier);
+
+                    if(user == null)
+                        throw new UsernameNotFoundException("User: " + identifier + ", not found!");
+
+                    return user;
+                })
+                .passwordEncoder(passwordEncoder);
+
+        return managerBuilder.build();
+    }
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -58,13 +59,19 @@ public class WebSecurityConfiguration {
         http.authorizeHttpRequests(auth ->
                 auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/appointment/public/**").authenticated() // Requires authentication without any role requirement
+                        .requestMatchers("/api/user/**").hasAuthority("ADMI")
+                        .requestMatchers("/api/history/**", "/api/prescription/**").hasAuthority("DOTR")
+                        .requestMatchers("/api/appointment/**").hasAuthority("ASTE") // Requires the ASTE role
+                        .requestMatchers("/api/history/public/**, /api/prescription/public/**").hasAnyAuthority("PCTE", "DOTR")
+                        .requestMatchers("/api/appointment/find-by-doctor").hasAnyAuthority("DOTR", "ASTE")
                         .anyRequest().authenticated()
         );
 
         //Statelessness
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        //UnAunthorized handler
+        //UnAuthorized handler
         http.exceptionHandling(handling -> handling.authenticationEntryPoint((req, res, ex) -> {
             res.sendError(
                     HttpServletResponse.SC_UNAUTHORIZED,

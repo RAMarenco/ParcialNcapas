@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.happybaras.parcial2.domain.entities.User;
+import org.happybaras.parcial2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,16 +19,11 @@ import java.io.IOException;
 
 @Component
 public class JWTTokenFilter extends OncePerRequestFilter {
-    final
+    @Autowired
     JWTTools jwtTools;
 
-//    final
-//    UserService userService;
-
-    public JWTTokenFilter(JWTTools jwtTools /*, UserService userService*/) {
-        this.jwtTools = jwtTools;
-//        this.userService = userService;
-    }
+    @Autowired
+    UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -36,7 +32,7 @@ public class JWTTokenFilter extends OncePerRequestFilter {
         String username = null;
         String token = null;
 
-        if(tokenHeader != null && tokenHeader.startsWith("Bearer ") && tokenHeader.length() > 7) {
+        if (tokenHeader != null && tokenHeader.startsWith("Bearer ") && tokenHeader.length() > 7) {
             token = tokenHeader.substring(7);
 
             try {
@@ -52,28 +48,28 @@ public class JWTTokenFilter extends OncePerRequestFilter {
             System.out.println("Bearer string not found");
         }
 
-//        if(username != null && token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-//            User user = userService.findOneByIdentifier(username);
-//
-//            if(user != null) {
-//                Boolean tokenValidity = userService.isTokenValid(user, token);
-//
-//                if(tokenValidity) {
-//                    //Preparing the authentication token.
-//                    UsernamePasswordAuthenticationToken authToken
-//                            = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-//
-//                    authToken.setDetails(
-//                            new WebAuthenticationDetailsSource().buildDetails(request)
-//                    );
-//
-//                    //This line, sets the user to security context to be handled by the filter chain
-//                    SecurityContextHolder
-//                            .getContext()
-//                            .setAuthentication(authToken);
-//                }
-//            }
-//        }
+        if (username != null && token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            User user = userService.findOneByIdentifier(username);
+
+            if (user != null) {
+                Boolean tokenValidity = userService.isTokenValid(user, token);
+
+                if (tokenValidity) {
+                    //Preparing the authentication token.
+                    UsernamePasswordAuthenticationToken authToken
+                            = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+
+                    authToken.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request)
+                    );
+
+                    //This line, sets the user to security context to be handled by the filter chain
+                    SecurityContextHolder
+                            .getContext()
+                            .setAuthentication(authToken);
+                }
+            }
+        }
 
         filterChain.doFilter(request, response);
     }
