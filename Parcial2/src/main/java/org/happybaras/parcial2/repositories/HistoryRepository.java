@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Repository
 public interface HistoryRepository extends JpaRepository<History, UUID> {
     Optional<History> findHistoryById(UUID id);
 
