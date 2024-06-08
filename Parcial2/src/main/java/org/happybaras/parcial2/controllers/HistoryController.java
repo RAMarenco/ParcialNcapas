@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class HistoryController {
     /* TODO: Inject dependency of HistoryService */
 
+    @PreAuthorize("hasAnyAuthority('DOTR, PCTE')")
     @GetMapping("/public/find-by-user")
-    @PreAuthorize("hasAnyRole('PATIENT', 'DOCTOR')")
     public ResponseEntity<GeneralResponse> findByUser(/* TODO: make a UserHistoryDTO */) {
         return GeneralResponse.builder().getResponse();
     }
 
+    @PreAuthorize("hasAuthority('DOTR')")
     @PostMapping("/create-new-register")
-    @PreAuthorize("hasAnyRole('DOCTOR')")
-    public ResponseEntity<GeneralResponse> createNewRegister (/* TODO: HistoryDTO */) {
+    public ResponseEntity<GeneralResponse> createNewRegister(/* TODO: HistoryDTO */) {
         return GeneralResponse.builder().getResponse();
     }
 }

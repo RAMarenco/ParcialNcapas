@@ -14,19 +14,20 @@ public class PrescriptionController {
     /* TODO: Inject dependency of precription service */
 
     @PostMapping("/add-prescription-to-appointment")
+    @PreAuthorize("hasAuthority('DOTR')")
     public ResponseEntity<GeneralResponse> addPrescription(/* TODO: Prescription and Appoointment DTO*/) {
         return GeneralResponse.builder().getResponse();
     }
 
     @GetMapping("/public/find-by-appointment")
-    @PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
+    @PreAuthorize("hasAnyAuthority('DOTR, PCTE')")
     public ResponseEntity<GeneralResponse> findByAppointment() {
         return GeneralResponse.builder().getResponse();
     }
 
+    @PreAuthorize("hasAnyAuthority('DOTR, PCTE')")
     @GetMapping("/find-all")
     public ResponseEntity<GeneralResponse> findAll() {
         return GeneralResponse.builder().getResponse();
     }
-
 }

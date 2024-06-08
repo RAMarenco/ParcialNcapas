@@ -22,49 +22,49 @@ public class AppointmentController {
 
     // The assistant will be able to create an appointment but should assign at least one doctor and one specialty
     @PostMapping("/create-appointment")
-    @PreAuthorize("hasRole('ASSISTANT')")
+    @PreAuthorize("hasAuthority('ASTE')")
     public ResponseEntity<GeneralResponse> create(/* TODO: AppointmentDTO for creation */) {
         return GeneralResponse.builder().getResponse();
     }
 
     // Update a single appointment by the assistant to approve it. It should require the doctors and specialties that will be necessary for this appointment
     @PostMapping("/approve")
-    @PreAuthorize("hasRole('ASSISTANT')")
+    @PreAuthorize("hasAuthority('ASTE')")
     public ResponseEntity<GeneralResponse> approve(/* TODO: AppointmentDTO for approving */) {
         return GeneralResponse.builder().getResponse();
     }
 
     // Update a single appointment by the assistant to reject it
     @PostMapping("/reject")
-    @PreAuthorize("hasRole('ASSISTANT')")
+    @PreAuthorize("hasAuthority('ASTE')")
     public ResponseEntity<GeneralResponse> reject(/* TODO: AppointmentDTO for rejecting */) {
         return GeneralResponse.builder().getResponse();
     }
 
     // Find all appointments
     @GetMapping("/find-all")
-    @PreAuthorize("hasRole('ASSISTANT')")
+    @PreAuthorize("hasAuthority('ASTE')")
     public ResponseEntity<GeneralResponse> findAll() {
         return GeneralResponse.builder().getResponse();
     }
 
     // Find all appointments of the current day
     @GetMapping("/find-by-period")
-    @PreAuthorize("hasRole('ASSISTANT')")
+    @PreAuthorize("hasAuthority('ASTE')")
     public ResponseEntity<GeneralResponse> findByPeriod() {
         return GeneralResponse.builder().getResponse();
     }
 
     // Find all appointments booked of a doctor
     @GetMapping("/find-by-doctor")
-    @PreAuthorize("hasAnyRole('ASSISTANT', 'DOCTOR')")
+    @PreAuthorize("hasAuthority('ASTE')")
     public ResponseEntity<GeneralResponse> findByDoctor(/* TODO: Make a DTO where the doctor identifier is required */) {
         return GeneralResponse.builder().getResponse();
     }
 
     // Find all appointments that are pending to be approved
     @GetMapping("/find-pending")
-    @PreAuthorize("hasRole('ASSISTANT')")
+    @PreAuthorize("hasAuthority('ASTE')")
     public ResponseEntity<GeneralResponse> findRequestedAppointments() {
         /* TODO: Make a service to request all appointments that have not been accepted yet*/
         return GeneralResponse.builder().getResponse();

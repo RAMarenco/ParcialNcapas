@@ -19,7 +19,7 @@ public class Token {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "content")
+    @Column(name = "content", length = 5000)
     private String content;
 
     @Column(name = "timestamp", updatable = false)
