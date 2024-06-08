@@ -58,6 +58,12 @@ public class WebSecurityConfiguration {
         http.authorizeHttpRequests(auth ->
                 auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/appointment/public/**").authenticated() // Requires authentication without any role requirement
+                        .requestMatchers("/api/user/**").hasRole("ADMIN")
+                        .requestMatchers("api/history/**", "api/prescription/**").hasRole("DOCTOR")
+                        .requestMatchers("/api/appointment/**").hasRole("ASSISTANT") // Requires the ASSISTANT role
+                        .requestMatchers("api/history/public/**, /api/prescription/public/**").hasAnyRole("PATIENT", "DOCTOR")
+                        .requestMatchers("/api/appointment/find-by-doctor").hasAnyRole("DOCTOR", "ASSISTANT")
                         .anyRequest().authenticated()
         );
 

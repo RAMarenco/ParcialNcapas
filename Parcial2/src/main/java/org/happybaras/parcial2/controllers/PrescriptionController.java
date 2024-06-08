@@ -2,6 +2,7 @@ package org.happybaras.parcial2.controllers;
 
 import org.happybaras.parcial2.domain.dtos.GeneralResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,12 @@ public class PrescriptionController {
 
     @PostMapping("/add-prescription-to-appointment")
     public ResponseEntity<GeneralResponse> addPrescription(/* TODO: Prescription and Appoointment DTO*/) {
+        return GeneralResponse.builder().getResponse();
+    }
+
+    @GetMapping("/public/find-by-appointment")
+    @PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
+    public ResponseEntity<GeneralResponse> findByAppointment() {
         return GeneralResponse.builder().getResponse();
     }
 
