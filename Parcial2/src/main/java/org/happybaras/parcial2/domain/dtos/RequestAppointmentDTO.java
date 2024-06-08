@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class RequestAppointmentDTO {
     @NotBlank
-    @Pattern(regexp = "yyyy/MM/dd HH:mm:ss")
-    private LocalDateTime dateTime;
+    @Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]) ([01]\\d|2[0-3]):[0-5]\\d$")
+    private String dateTime;
 }

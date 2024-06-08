@@ -1,7 +1,10 @@
 package org.happybaras.parcial2.controllers;
 
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.happybaras.parcial2.domain.dtos.GeneralResponse;
 import org.happybaras.parcial2.domain.dtos.RequestAppointmentDTO;
+import org.happybaras.parcial2.domain.entities.Appointment;
 import org.happybaras.parcial2.domain.entities.User;
 import org.happybaras.parcial2.services.AppointmentService;
 import org.happybaras.parcial2.services.UserService;
@@ -9,11 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+@Slf4j
 @RestController
 @RequestMapping("/api/appointment")
 public class AppointmentController {
@@ -28,15 +32,23 @@ public class AppointmentController {
     // The user will be able to create an appointment without a doctor nor a specialty
     @PostMapping("/public/request-appointment")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<GeneralResponse> request(RequestAppointmentDTO info) {
+    public ResponseEntity<GeneralResponse> request(@RequestBody @Valid RequestAppointmentDTO info) {
         User user;
+        log.info(info.getDateTime());
+        LocalDateTime dateTime = LocalDateTime.parse(info.getDateTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+
         try {
             user = userService.findUserAuthenticated();
         } catch (Exception e) {
             return GeneralResponse.builder().status(HttpStatus.NOT_FOUND).getResponse();
         }
 
-        appointmentService.createAppointmentRequest(user, info.getDateTime());
+//        Appointment appointment = appointmentService.findByUserAndDateTime(user, dateTime);
+//
+//        if(appointment != null)
+//            return GeneralResponse.builder().message("Appointment already exists").status(HttpStatus.CONFLICT).getResponse();
+//
+        appointmentService.createAppointmentRequest(user, dateTime);
 
         return GeneralResponse.builder().message("Appointment created succesfully").getResponse();
     }

@@ -33,13 +33,18 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Optional<Appointment> findAppointmentById(UUID id) {
-        return appointmentRepository.findAppointmentById(id);
+    public Appointment findByUserAndDateTime(User user, LocalDateTime dateTime) {
+        return appointmentRepository.findByUserAndDateTime(user, dateTime).orElse(null);
     }
 
     @Override
-    public Optional<Appointment> findAppointmentByStatus(String status) {
-        return appointmentRepository.findAppointmentByStatus(status);
+    public Appointment findAppointmentById(UUID id) {
+        return appointmentRepository.findAppointmentById(id).orElse(null);
+    }
+
+    @Override
+    public Appointment findAppointmentByStatus(String status) {
+        return appointmentRepository.findAppointmentByStatus(status).orElse(null);
     }
 
     @Override

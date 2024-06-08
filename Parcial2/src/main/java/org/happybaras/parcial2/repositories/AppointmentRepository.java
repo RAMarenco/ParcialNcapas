@@ -16,6 +16,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     // Obtain appointments by status
     Optional<Appointment> findAppointmentByStatus(String status);
 
+    Optional<Appointment> findByUserAndDateTime(User user, LocalDateTime dateTime);
+
     // Obtain appointments by user given a start time
     List<Appointment> findAppointmentsByUserAndDateTimeLessThanEqualAndStatus(User user, LocalDateTime startTime, String status);
 }

@@ -19,7 +19,7 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-        @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
     @Column(name = "date_time")
     private LocalDateTime dateTime;
 

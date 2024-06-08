@@ -11,7 +11,8 @@ import java.util.UUID;
 
 public interface AppointmentService {
     void createAppointmentRequest(User user, LocalDateTime dateTime);
-    Optional<Appointment> findAppointmentById(UUID id);
-    Optional<Appointment> findAppointmentByStatus(String status);
+    Appointment findByUserAndDateTime(User user, LocalDateTime dateTime);
+    Appointment findAppointmentById(UUID id);
+    Appointment findAppointmentByStatus(String status);
     List<Appointment> findAppointmentsByUserAndDateTimeLessThanEqualAndStatus(User user, LocalDateTime startTime, String status);
 }
