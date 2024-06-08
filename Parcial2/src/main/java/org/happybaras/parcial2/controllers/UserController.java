@@ -9,19 +9,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/user")
 public class UserController {
     @GetMapping("/find-all")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMI')")
     public ResponseEntity<GeneralResponse> findAll() {
         return GeneralResponse.builder().getResponse();
     }
 
     @DeleteMapping("/delete")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMI')")
     public ResponseEntity<GeneralResponse> delete(/* TODO: UserDeleteDTO*/) {
         return GeneralResponse.builder().getResponse();
     }
 
     @PostMapping("/update")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMI')")
     public ResponseEntity<GeneralResponse> update(/* TODO: UserUpdateDTO */) {
         return GeneralResponse.builder().getResponse();
     }
