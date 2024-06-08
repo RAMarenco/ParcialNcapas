@@ -19,9 +19,24 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
-    @Column(name = "date_time")
-    private LocalDateTime dateTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @Column(name = "start_time")
+    private LocalDateTime startTime;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @Column(name = "end_time")
+    private LocalDateTime endTime;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @Column(name = "requested_time")
+    private LocalDateTime requestedTime;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @Column(name = "estimated_end_time")
+    private LocalDateTime estimatedEndTime;
+
+    @Column(name = "reason")
+    private String reason;
 
     @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY)
     @JsonIgnore
