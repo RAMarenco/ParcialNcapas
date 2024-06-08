@@ -1,6 +1,12 @@
 package org.happybaras.parcial2.controllers;
 
 import org.happybaras.parcial2.domain.dtos.GeneralResponse;
+import org.happybaras.parcial2.domain.dtos.RequestAppointmentDTO;
+import org.happybaras.parcial2.domain.entities.User;
+import org.happybaras.parcial2.services.AppointmentService;
+import org.happybaras.parcial2.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,13 +17,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/appointment")
 public class AppointmentController {
-    /* TODO: Inject dependency of AppointmentService */
+    private final AppointmentService appointmentService;
+    private final UserService userService;
+
+    public AppointmentController(AppointmentService appointmentService, UserService userService) {
+        this.appointmentService = appointmentService;
+        this.userService = userService;
+    }
 
     // The user will be able to create an appointment without a doctor nor a specialty
     @PostMapping("/public/request-appointment")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<GeneralResponse> request(/* TODO: AppointmentDTO for request creation */) {
-        return GeneralResponse.builder().getResponse();
+    public ResponseEntity<GeneralResponse> request(RequestAppointmentDTO info) {
+        User user;
+        try {
+            user = userService.findUserAuthenticated();
+        } catch (Exception e) {
+            return GeneralResponse.builder().status(HttpStatus.NOT_FOUND).getResponse();
+        }
+
+        appointmentService.createAppointmentRequest(user, info.getDateTime());
+
+        return GeneralResponse.builder().message("Appointment created succesfully").getResponse();
     }
 
     // The assistant will be able to create an appointment but should assign at least one doctor and one specialty
