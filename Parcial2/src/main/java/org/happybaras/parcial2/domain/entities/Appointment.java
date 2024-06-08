@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,8 +18,11 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "timestamp")
-    private Date timestamp;
+//    @Column(name = "timestamp")
+//    private Date timestamp;
+
+    @Column(name = "date_time")
+    private LocalDateTime dateTime;
 
     @OneToMany(mappedBy = "appointment", fetch = FetchType.LAZY)
     @JsonIgnore
@@ -34,7 +37,7 @@ public class Appointment {
     @JsonIgnore
     private List<Prescription> prescription;
 
-    @Column(name = "approved")
-    @ColumnDefault(value = "false")
-    private Boolean approved;
+    @Column(name = "status")
+    @ColumnDefault(value = "pending")
+    private String status;
 }
